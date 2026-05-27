@@ -4,15 +4,15 @@ import {
   getUserByIdHandler,
   getUsersHandler,
   registerUserHandler,
-} from '../handlers/user.handler.js'
-import { defaultHook } from '../lib/defaultHook.js'
+} from './user.handler.js'
+import { defaultHook } from '../../lib/defaultHook.js'
 import {
   ErrorSchema,
   IdParamSchema,
   RegisterBodySchema,
   UserListSchema,
   UserResponseSchema,
-} from '../schemas/user.schema.js'
+} from './user.schema.js'
 
 export const userRouter = new OpenAPIHono({ defaultHook })
 

@@ -41,25 +41,21 @@ api/
   server.ts               ← entry: mongoose.connect + Bun.serve()
   constants/
     httpStatus.ts         ← HTTP_STATUS map + getStatusText(code)
-  controllers/
-    user.controller.ts    ← DB logic only, returns plain data / null / boolean
-  handlers/
-    user.handler.ts       ← c.req.valid() + call controller + throw HTTPException
   lib/
     defaultHook.ts        ← Zod validation error → { msg, code, status }
   middleware/
     responseFormat.ts     ← wraps every JSON response: { msg, code, status }
-  models/
-    user.model.ts         ← Mongoose User schema
-  routes/
-    user.routes.ts        ← createRoute() definitions + openapi() bindings
-  schemas/
-    user.schema.ts        ← Zod schemas with .openapi() metadata
+  modules/
+    user/
+      user.types.ts       ← Mongoose document interface
+      user.model.ts       ← Mongoose User schema
+      user.schema.ts      ← Zod schemas with .openapi() metadata
+      user.controller.ts  ← DB logic only, returns plain data / null / boolean
+      user.handler.ts     ← c.req.valid() + call controller + throw HTTPException
+      user.routes.ts      ← createRoute() definitions + openapi() bindings
   tests/
     setup.ts              ← mongodb-memory-server lifecycle (imported by test files)
     user.test.ts          ← bun test integration tests
-  types/
-    userTypes.ts          ← Mongoose document interface
 prisma/
   schema.prisma           ← 6 models: Employee, Customer, Product, Order, OrderItem, Payment
   migrations/             ← gitignored
@@ -72,12 +68,14 @@ ui/                       ← React + Vite scaffold (standalone package)
 
 ## Architecture rules (enforced, don't break)
 
-**API layer split:**
+**API layer split (inside each module folder):**
 
-- `routes/` — `createRoute()` config only (path, method, tags, schemas). No logic.
-- `handlers/` — `c.req.valid()` + call controller + `c.json()` / `throw HTTPException`. No DB.
-- `controllers/` — DB operations only. Returns plain `UserDto | null | boolean`. No Hono.
-- `schemas/` — Zod schemas shared across all three layers.
+- `*.routes.ts` — `createRoute()` config only (path, method, tags, schemas). No logic.
+- `*.handler.ts` — `c.req.valid()` + call controller + `c.json()` / `throw HTTPException`. No DB.
+- `*.controller.ts` — DB operations only. Returns plain `UserDto | null | boolean`. No Hono.
+- `*.schema.ts` — Zod schemas shared across all three layers.
+- `*.model.ts` — Mongoose schema + model.
+- `*.types.ts` — TypeScript interfaces for Mongoose documents.
 
 **Response shape — every endpoint returns:**
 

@@ -5,13 +5,13 @@ import {
   findUserById,
   listUsers,
   registerUser,
-} from '../controllers/user.controller.js'
+} from './user.controller.js'
 import type {
   deleteUserRoute,
   getUserByIdRoute,
   getUsersRoute,
   registerUserRoute,
-} from '../routes/user.routes.js'
+} from './user.routes.js'
 
 export const registerUserHandler: RouteHandler<typeof registerUserRoute> = async (c) => {
   const { email, password } = c.req.valid('json')

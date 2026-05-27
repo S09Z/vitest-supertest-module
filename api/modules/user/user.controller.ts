@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs'
-import { User } from '../models/user.model.js'
+import { User } from './user.model.js'
 
 export type UserDto = { id: string; email: string }
 
