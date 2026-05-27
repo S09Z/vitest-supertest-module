@@ -1,15 +1,18 @@
 import { swaggerUI } from '@hono/swagger-ui'
+import { trpcServer } from '@hono/trpc-server'
 import { OpenAPIHono } from '@hono/zod-openapi'
 import { HTTPException } from 'hono/http-exception'
 import { getStatusText } from './constants/httpStatus.js'
 import { defaultHook } from './lib/defaultHook.js'
 import { responseFormat } from './middleware/responseFormat.js'
+import { appRouter } from './routes/trpc.js'
 import { userRouter } from './routes/user.routes.js'
 
 export function configureApp() {
   const app = new OpenAPIHono({ defaultHook })
 
   app.use('*', responseFormat)
+  app.use('/trpc/*', trpcServer({ router: appRouter }))
   app.route('/api/users', userRouter)
 
   app.doc('/doc', {
