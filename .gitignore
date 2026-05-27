@@ -20,10 +20,10 @@ prisma/migrations/
 
 # macOS
 .DS_Store
+**/.DS_Store
 
 # IDE
-.vscode/*
-!.vscode/settings.json
+.vscode/
 .idea/
 
 # Test / coverage
@@ -34,8 +34,6 @@ ui/e2e/test-results/
 # Logs
 *.log
 
-# Project-specific non-source files
-memory.md
-socratis-index.md
+# pnpm (migrated to Bun)
 pnpm-lock.yaml
 pnpm-workspace.yaml
