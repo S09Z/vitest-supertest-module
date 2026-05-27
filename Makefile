@@ -19,6 +19,9 @@ test: test-api test-e2e
 
 # ── Dev servers ───────────────────────────────────────────────────────────────
 dev:
+	@PORT=$$(grep '^API_APP_PORT' .env | cut -d= -f2 | tr -d '"'); \
+	echo "Killing port $$PORT..."; \
+	lsof -ti tcp:$$PORT 2>/dev/null | xargs kill -9 2>/dev/null || true; \
 	bun run api/server.ts
 
 dev-ui:
