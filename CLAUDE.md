@@ -45,14 +45,17 @@ api/
     defaultHook.ts        ← Zod validation error → { msg, code, status }
   middleware/
     responseFormat.ts     ← wraps every JSON response: { msg, code, status }
+  models/
+    user.model.ts         ← Mongoose User schema
   modules/
     user/
-      user.types.ts       ← Mongoose document interface
-      user.model.ts       ← Mongoose User schema
       user.schema.ts      ← Zod schemas with .openapi() metadata
       user.controller.ts  ← DB logic only, returns plain data / null / boolean
       user.handler.ts     ← c.req.valid() + call controller + throw HTTPException
-      user.routes.ts      ← createRoute() definitions + openapi() bindings
+  routes/
+    user.routes.ts        ← createRoute() definitions + openapi() bindings
+  types/
+    user.types.ts         ← Mongoose document interface
   tests/
     setup.ts              ← mongodb-memory-server lifecycle (imported by test files)
     user.test.ts          ← bun test integration tests
@@ -70,12 +73,13 @@ ui/                       ← React + Vite scaffold (standalone package)
 
 **API layer split (inside each module folder):**
 
-- `*.routes.ts` — `createRoute()` config only (path, method, tags, schemas). No logic.
-- `*.handler.ts` — `c.req.valid()` + call controller + `c.json()` / `throw HTTPException`. No DB.
-- `*.controller.ts` — DB operations only. Returns plain `UserDto | null | boolean`. No Hono.
-- `*.schema.ts` — Zod schemas shared across all three layers.
-- `*.model.ts` — Mongoose schema + model.
-- `*.types.ts` — TypeScript interfaces for Mongoose documents.
+- `routes/` — `createRoute()` config + `openapi()` bindings only. No logic.
+- `modules/<domain>/` — handler, controller, schema per domain:
+  - `*.handler.ts` — `c.req.valid()` + call controller + `c.json()` / `throw HTTPException`. No DB.
+  - `*.controller.ts` — DB operations only. Returns plain `UserDto | null | boolean`. No Hono.
+  - `*.schema.ts` — Zod schemas shared across all three layers.
+- `models/` — Mongoose schema + model per domain.
+- `types/` — TypeScript interfaces for Mongoose documents.
 
 **Response shape — every endpoint returns:**
 

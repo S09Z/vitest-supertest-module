@@ -4,7 +4,7 @@ import { HTTPException } from 'hono/http-exception'
 import { getStatusText } from './constants/httpStatus.js'
 import { defaultHook } from './lib/defaultHook.js'
 import { responseFormat } from './middleware/responseFormat.js'
-import { userRouter } from './modules/user/user.routes.js'
+import { userRouter } from './routes/user.routes.js'
 
 export function configureApp() {
   const app = new OpenAPIHono({ defaultHook })
