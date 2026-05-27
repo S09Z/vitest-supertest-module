@@ -7,6 +7,10 @@ export const responseFormat: MiddlewareHandler = async (c, next) => {
   const { status } = c.res
   if (status === 204) return
 
+  // skip routes that must return raw JSON (OpenAPI spec, tRPC)
+  const path = c.req.path
+  if (path === '/doc' || path.startsWith('/trpc')) return
+
   const ct = c.res.headers.get('content-type') ?? ''
   if (!ct.includes('application/json')) return
 
