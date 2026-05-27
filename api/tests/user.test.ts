@@ -16,9 +16,9 @@ async function post(path: string, body: unknown) {
   })
 }
 
-describe('POST /api/users/register', () => {
+describe('POST /api/v1/users/register', () => {
   it('returns 201 with { msg, code, status }', async () => {
-    const res = await post('/api/users/register', { email: 'alice@example.com', password: 'secret123' })
+    const res = await post('/api/v1/users/register', { email: 'alice@example.com', password: 'secret123' })
     const body = await res.json()
 
     expect(res.status).toBe(201)
@@ -30,7 +30,7 @@ describe('POST /api/users/register', () => {
   })
 
   it('returns 400 when email is missing', async () => {
-    const res = await post('/api/users/register', { password: 'secret123' })
+    const res = await post('/api/v1/users/register', { password: 'secret123' })
     const body = await res.json()
 
     expect(res.status).toBe(400)
@@ -40,7 +40,7 @@ describe('POST /api/users/register', () => {
   })
 
   it('returns 400 when password is missing', async () => {
-    const res = await post('/api/users/register', { email: 'bob@example.com' })
+    const res = await post('/api/v1/users/register', { email: 'bob@example.com' })
     const body = await res.json()
 
     expect(res.status).toBe(400)
@@ -50,8 +50,8 @@ describe('POST /api/users/register', () => {
   })
 
   it('returns 409 on duplicate email', async () => {
-    await post('/api/users/register', { email: 'dup@example.com', password: 'secret123' })
-    const res = await post('/api/users/register', { email: 'dup@example.com', password: 'secret123' })
+    await post('/api/v1/users/register', { email: 'dup@example.com', password: 'secret123' })
+    const res = await post('/api/v1/users/register', { email: 'dup@example.com', password: 'secret123' })
     const body = await res.json()
 
     expect(res.status).toBe(409)
@@ -61,11 +61,11 @@ describe('POST /api/users/register', () => {
   })
 })
 
-describe('GET /api/users', () => {
+describe('GET /api/v1/users', () => {
   it('returns 200 with user list in msg', async () => {
-    await post('/api/users/register', { email: 'alice@example.com', password: 'secret123' })
+    await post('/api/v1/users/register', { email: 'alice@example.com', password: 'secret123' })
 
-    const res = await req('/api/users')
+    const res = await req('/api/v1/users')
     const body = await res.json()
 
     expect(res.status).toBe(200)
@@ -76,11 +76,11 @@ describe('GET /api/users', () => {
   })
 })
 
-describe('GET /api/users/:id', () => {
+describe('GET /api/v1/users/:id', () => {
   it('returns 200 with user in msg', async () => {
-    const created = await (await post('/api/users/register', { email: 'alice@example.com', password: 'secret123' })).json()
+    const created = await (await post('/api/v1/users/register', { email: 'alice@example.com', password: 'secret123' })).json()
 
-    const res = await req(`/api/users/${created.msg.id}`)
+    const res = await req(`/api/v1/users/${created.msg.id}`)
     const body = await res.json()
 
     expect(res.status).toBe(200)
@@ -90,7 +90,7 @@ describe('GET /api/users/:id', () => {
   })
 
   it('returns 404 for unknown id', async () => {
-    const res = await req('/api/users/000000000000000000000000')
+    const res = await req('/api/v1/users/000000000000000000000000')
     const body = await res.json()
 
     expect(res.status).toBe(404)
@@ -100,7 +100,7 @@ describe('GET /api/users/:id', () => {
   })
 
   it('returns 400 for malformed id', async () => {
-    const res = await req('/api/users/not-an-id')
+    const res = await req('/api/v1/users/not-an-id')
     const body = await res.json()
 
     expect(res.status).toBe(400)
@@ -110,19 +110,19 @@ describe('GET /api/users/:id', () => {
   })
 })
 
-describe('DELETE /api/users/:id', () => {
+describe('DELETE /api/v1/users/:id', () => {
   it('deletes a user and returns 204 (no body)', async () => {
-    const created = await (await post('/api/users/register', { email: 'alice@example.com', password: 'secret123' })).json()
+    const created = await (await post('/api/v1/users/register', { email: 'alice@example.com', password: 'secret123' })).json()
 
-    const del = await req(`/api/users/${created.msg.id}`, { method: 'DELETE' })
+    const del = await req(`/api/v1/users/${created.msg.id}`, { method: 'DELETE' })
     expect(del.status).toBe(204)
 
-    const check = await req(`/api/users/${created.msg.id}`)
+    const check = await req(`/api/v1/users/${created.msg.id}`)
     expect(check.status).toBe(404)
   })
 
   it('returns 404 when deleting unknown id', async () => {
-    const res = await req('/api/users/000000000000000000000000', { method: 'DELETE' })
+    const res = await req('/api/v1/users/000000000000000000000000', { method: 'DELETE' })
     const body = await res.json()
 
     expect(res.status).toBe(404)

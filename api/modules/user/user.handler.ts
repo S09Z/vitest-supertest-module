@@ -11,7 +11,7 @@ import type {
   getUserByIdRoute,
   getUsersRoute,
   registerUserRoute,
-} from '../../routes/user.routes.js'
+} from '../../routes/v1/user.routes.js'
 
 export const registerUserHandler: RouteHandler<typeof registerUserRoute> = async (c) => {
   const { email, password } = c.req.valid('json')
