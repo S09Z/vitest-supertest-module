@@ -1,0 +1,41 @@
+# Claude Code internals
+.claude/
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Bun
+bun.lock
+
+# Prisma
+prisma/migrations/
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/*
+!.vscode/settings.json
+.idea/
+
+# Test / coverage
+coverage/
+playwright-report/
+ui/e2e/test-results/
+
+# Logs
+*.log
+
+# Project-specific non-source files
+memory.md
+socratis-index.md
+pnpm-lock.yaml
+pnpm-workspace.yaml
