@@ -18,7 +18,7 @@ export default defineConfig({
     { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
   ],
 
-  webServer: {
+  webServer: process.env.NO_WEB_SERVER ? undefined : {
     command: 'bun run dev',
     url: 'http://localhost:5173',
     reuseExistingServer: !process.env.CI,
